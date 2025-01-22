@@ -1,0 +1,22 @@
+{
+  "name": "is-abc-npm-package",
+  "version": "1.0.0",
+  "description": "Is the string ABC?",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manojtharindu11/is-abc-npm-package.git"
+  },
+  "keywords": [
+    "ABC"
+  ],
+  "author": "Manoj Thilakarathna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manojtharindu11/is-abc-npm-package/issues"
+  },
+  "homepage": "https://github.com/manojtharindu11/is-abc-npm-package#readme"
+}
