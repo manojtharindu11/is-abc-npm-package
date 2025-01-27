@@ -1,5 +1,5 @@
 {
-  "name": "@manojtharindu11/is-abc-npm",
+  "name": "@manojtharindu11/is-abc",
   "version": "1.2.1",
   "description": "Is the string ABC?",
   "main": "index.js",
