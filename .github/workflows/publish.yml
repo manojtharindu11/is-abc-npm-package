@@ -24,31 +24,4 @@ jobs:
             - name: Publish
               run: npm publish --access public
               env:
-                  NODE_AUTH_TOKEN: ${{ name: "Publish"
-
-on:
-    # release:
-    #     types: [published]
-    push:
-        branches:
-            - main
-
-jobs:
-    release:
-        name: Publish to npm
-        runs-on: ubuntu-latest
-        steps:
-            - name: chekout
-              uses: actions/checkout@v4
-
-            - name: setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "14"
-                  registry-url: "https://registry.npmjs.org"
-            
-            - name: publish
-              run: npm publish --access public
-              env:
-                  NODE_AUTH_TOKEN: "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"
-        
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}        
