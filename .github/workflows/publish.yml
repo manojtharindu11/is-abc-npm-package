@@ -22,15 +22,15 @@ jobs:
                   registry-url: "https://registry.npmjs.org"
                   scope: "@manojtharindu11"
 
-            # # Step 3: Authenticate npm for publishing to npm registry
-            # - name: Authenticate npm
-            #   run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
+            # Step 3: Authenticate npm for publishing to npm registry
+            - name: Authenticate npm
+              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
 
-            # # Step 4: Publish to npm registry
-            # - name: Publish to npm
-            #   run: npm publish --access public
-            #   env:
-            #       NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+            # Step 4: Publish to npm registry
+            - name: Publish to npm
+              run: npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
             # Step 5: Authenticate for GitHub Packages
             - name: Authenticate GitHub Packages
@@ -38,6 +38,6 @@ jobs:
 
             # Step 6: Publish to GitHub Packages
             - name: Publish to GitHub Packages
-              run: npm publish
+              run: npm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.GH_PAT }}
