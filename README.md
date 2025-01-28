@@ -1,1 +1,1 @@
-# is-def
+# is-def-npm-package
