@@ -1,43 +1,46 @@
 name: Publish
 
 on:
-    release:
-        types: [published]
+  release:
+    types: [published]
 
 jobs:
-    release:
-        name: Publish to npm and GitHub Packages
-        runs-on: ubuntu-latest
+  release:
+    name: Publish to npm and GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
 
-        steps:
-            # Step 1: Checkout the repository
-            - name: Checkout Repository
-              uses: actions/checkout@v4
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-            # Step 2: Set up Node.js
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "14"
-                  registry-url: "https://registry.npmjs.org"
-                  scope: "@manojtharindu11"
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "14"
+          registry-url: "https://registry.npmjs.org"
+          scope: "@manojtharindu11"
 
-            # Step 3: Authenticate npm for publishing to npm registry
-            - name: Authenticate npm
-              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
+      # Step 3: Authenticate npm for publishing to npm registry
+      - name: Authenticate npm
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
 
-            # Step 4: Publish to npm registry
-            - name: Publish to npm
-              run: npm publish --access public
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      # Step 4: Publish to npm registry
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
-            # Step 5: Authenticate for GitHub Packages
-            - name: Authenticate GitHub Packages
-              run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" >> ~/.npmrc
+      # Step 5: Authenticate for GitHub Packages
+      - name: Authenticate GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" >> ~/.npmrc
 
-            # Step 6: Publish to GitHub Packages
-            - name: Publish to GitHub Packages
-              run: npm publish --access public
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.GH_PAT }}
+      # Step 6: Publish to GitHub Packages
+      - name: Publish to GitHub Packages
+        run: npm publish --registry https://npm.pkg.github.com --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PAT }}
