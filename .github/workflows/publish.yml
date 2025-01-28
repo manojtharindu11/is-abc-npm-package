@@ -25,15 +25,15 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           scope: "@manojtharindu11"
 
-      # Step 3: Authenticate npm for publishing to npm registry
-      - name: Authenticate npm
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
+      # # Step 3: Authenticate npm for publishing to npm registry
+      # - name: Authenticate npm
+      #   run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
 
-      # Step 4: Publish to npm registry
-      - name: Publish to npm
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      # # Step 4: Publish to npm registry
+      # - name: Publish to npm
+      #   run: npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
       # Step 5: Authenticate for GitHub Packages
       - name: Authenticate GitHub Packages
@@ -46,9 +46,12 @@ jobs:
           npm publish --registry https://npm.pkg.github.com --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PAT }}
-        continue-on-error: true  # Continue the workflow even if npm publish fails
+        continue-on-error: true  # Continue even if publish fails
 
-      # Step 6.1: Capture error if npm publish to GitHub fails
-      - name: Log error if npm publish to GitHub fails
-        if: failure()  # This step only runs if the previous npm publish step fails
-        run: echo "Error occurred while publishing to GitHub Packages"
+      # Step 6.1: Log error and show npm debug log if npm publish to GitHub fails
+      - name: Log error and show npm debug log if npm publish to GitHub fails
+        if: failure()  # This step runs if the previous step fails
+        run: |
+          echo "Error occurred during npm publish to GitHub Packages"
+          echo "Displaying npm debug log:"
+          cat /home/runner/.npm/_logs/*.log  # Print the contents of the npm debug log
