@@ -1,5 +1,5 @@
-function isAbc(string) {
-  return string === "ABC";
+function isDef(string) {
+  return string === "def";
 }
 
-module.exports = isAbc;
+module.exports = isDef;

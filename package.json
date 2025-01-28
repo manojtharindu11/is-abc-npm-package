@@ -1,14 +1,14 @@
 {
-  "name": "@manojtharindu11/is-abc",
-  "version": "1.2.1",
-  "description": "Is the string ABC?",
+  "name": "@manojtharindu11/is-def",
+  "version": "1.0.0",
+  "description": "Is the string DEF?",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/manojtharindu11/is-abc-npm-package.git"
+    "url": "git+https://github.com/manojtharindu11/is-def.git"
   },
   "keywords": [
     "ABC"
@@ -16,7 +16,7 @@
   "author": "Manoj Thilakarathna",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/manojtharindu11/is-abc-npm-package/issues"
+    "url": "https://github.com/manojtharindu11/is-def/issues"
   },
-  "homepage": "https://github.com/manojtharindu11/is-abc-npm-package#readme"
+  "homepage": "https://github.com/manojtharindu11/is-def#readme"
 }
