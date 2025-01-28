@@ -1,4 +1,4 @@
-name: "Publish"
+name: Publish
 
 on:
     release:
@@ -6,19 +6,38 @@ on:
 
 jobs:
     release:
-        name: Publish to npm
+        name: Publish to npm and GitHub Packages
         runs-on: ubuntu-latest
+
         steps:
-            - name: checkout
+            # Step 1: Checkout the repository
+            - name: Checkout Repository
               uses: actions/checkout@v4
 
-            - name: setup node
+            # Step 2: Set up Node.js
+            - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
                   node-version: "14"
                   registry-url: "https://registry.npmjs.org"
-            
-            - name: Publish
+                  scope: "@manojtharindu11"
+
+            # Step 3: Authenticate npm for publishing to npm registry
+            - name: Authenticate npm
+              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
+
+            # Step 4: Publish to npm registry
+            - name: Publish to npm
               run: npm publish --access public
               env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}        
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+            # Step 5: Authenticate for GitHub Packages
+            - name: Authenticate GitHub Packages
+              run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" >> ~/.npmrc
+
+            # Step 6: Publish to GitHub Packages
+            - name: Publish to GitHub Packages
+              run: npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.GH_PAT }}
