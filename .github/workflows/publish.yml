@@ -5,53 +5,59 @@ on:
     types: [published]
 
 jobs:
-  release:
-    name: Publish to npm and GitHub Packages
+  # Job to publish to npm registry
+  npm-publish:
+    name: Publish to npm
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
 
     steps:
       # Step 1: Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js
-      - name: Setup Node.js
+      # Step 2: Set up Node.js for npm registry
+      - name: Setup Node.js for npm
         uses: actions/setup-node@v4
         with:
           node-version: "14"
           registry-url: "https://registry.npmjs.org"
           scope: "@manojtharindu11"
 
-      # # Step 3: Authenticate npm for publishing to npm registry
-      # - name: Authenticate npm
-      #   run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
+      # Step 3: Authenticate npm for publishing to npm registry
+      - name: Authenticate npm
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
 
-      # # Step 4: Publish to npm registry
-      # - name: Publish to npm
-      #   run: npm publish --access public
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      # Step 4: Publish to npm registry
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
-      # Step 5: Authenticate for GitHub Packages
+  # Job to publish to GitHub Packages
+  github-publish:
+    name: Publish to GitHub Packages
+    runs-on: ubuntu-latest
+    needs: npm-publish  # Ensure this job runs after npm-publish job completes
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js for GitHub Packages
+      - name: Setup Node.js for GitHub Packages
+        uses: actions/setup-node@v4
+        with:
+          node-version: "14"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@manojtharindu11"
+
+      # Step 3: Authenticate for GitHub Packages
       - name: Authenticate GitHub Packages
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PAT }}" >> ~/.npmrc
 
-      # Step 6: Publish to GitHub Packages
+      # Step 4: Publish to GitHub Packages
       - name: Publish to GitHub Packages
-        run: |
-          set -e
-          npm publish --registry https://npm.pkg.github.com --access public
+        run: npm publish --registry https://npm.pkg.github.com --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PAT }}
-        continue-on-error: true  # Continue even if publish fails
-
-      # Step 6.1: Log error and show npm debug log if npm publish to GitHub fails
-      - name: Log error and show npm debug log if npm publish to GitHub fails
-        if: failure()  # This step runs if the previous step fails
-        run: |
-          echo "Error occurred during npm publish to GitHub Packages"
-          echo "Displaying npm debug log:"
-          cat /home/runner/.npm/_logs/*.log  # Print the contents of the npm debug log
