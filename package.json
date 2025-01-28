@@ -1,6 +1,6 @@
 {
   "name": "@manojtharindu11/is-def",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Is the string DEF?",
   "main": "index.js",
   "scripts": {
